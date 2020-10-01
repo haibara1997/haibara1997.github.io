@@ -6,17 +6,24 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Tag: hexo配置 | Haibara的博客</title>
+  <title>Leetcode刷题日记113.路径总和II | Haibara的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="每个人都是一座孤岛">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Haibara的博客">
-<meta property="og:url" content="http://yoursite.com/tags/hexo%E9%85%8D%E7%BD%AE/index.html">
+  <meta name="description" content="二刷这道题目，9月可以说是Leetcode的回溯月，做了挺多道dfs和bfs的题目，现以这道题为例子，对两种算法做一个总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Leetcode刷题日记113.路径总和II">
+<meta property="og:url" content="http://yoursite.com/2020/10/02/Leetcode%E5%88%B7%E9%A2%98%E6%97%A5%E8%AE%B0113-%E8%B7%AF%E5%BE%84%E6%80%BB%E5%92%8CII/index.html">
 <meta property="og:site_name" content="Haibara的博客">
-<meta property="og:description" content="每个人都是一座孤岛">
+<meta property="og:description" content="二刷这道题目，9月可以说是Leetcode的回溯月，做了挺多道dfs和bfs的题目，现以这道题为例子，对两种算法做一个总结">
 <meta property="og:locale">
+<meta property="og:image" content="http://yoursite.com/2020/10/02/Leetcode%E5%88%B7%E9%A2%98%E6%97%A5%E8%AE%B0113-%E8%B7%AF%E5%BE%84%E6%80%BB%E5%92%8CII/%E9%A2%98%E7%9B%AE.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/02/Leetcode%E5%88%B7%E9%A2%98%E6%97%A5%E8%AE%B0113-%E8%B7%AF%E5%BE%84%E6%80%BB%E5%92%8CII/dfs%E7%BB%93%E6%9E%9C.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/02/Leetcode%E5%88%B7%E9%A2%98%E6%97%A5%E8%AE%B0113-%E8%B7%AF%E5%BE%84%E6%80%BB%E5%92%8CII/bfs%E7%BB%93%E6%9E%9C.png">
+<meta property="article:published_time" content="2020-10-01T17:06:43.000Z">
+<meta property="article:modified_time" content="2020-10-01T19:12:41.399Z">
 <meta property="article:author" content="Haibara">
+<meta property="article:tag" content="Python 算法 dfs bfs Leetcode">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/10/02/Leetcode%E5%88%B7%E9%A2%98%E6%97%A5%E8%AE%B0113-%E8%B7%AF%E5%BE%84%E6%80%BB%E5%92%8CII/%E9%A2%98%E7%9B%AE.png">
   
     <link rel="alternative" href="/atom.xml" title="Haibara的博客" type="application/atom+xml">
   
@@ -144,60 +151,240 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Leetcode刷题日记113-路径总和II" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-&#39;windows">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/10/11/hexo%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%A4%B1%E8%B4%A5%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F%E7%AE%80%E5%8D%95%E5%A5%BD%E7%94%A8%E7%9A%84%E6%96%B0%E6%80%9D%E8%B7%AF%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" class="archive-article-date">
-  	<time datetime="2019-10-11T13:14:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-11</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/10/11/hexo%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%A4%B1%E8%B4%A5%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F%E7%AE%80%E5%8D%95%E5%A5%BD%E7%94%A8%E7%9A%84%E6%96%B0%E6%80%9D%E8%B7%AF%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">hexo环境变量添加失败怎么办？新思路解决这一问题</a>
+    <h1 class="article-title" itemprop="name">
+      Leetcode刷题日记113.路径总和II
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2020/10/02/Leetcode%E5%88%B7%E9%A2%98%E6%97%A5%E8%AE%B0113-%E8%B7%AF%E5%BE%84%E6%80%BB%E5%92%8CII/" class="archive-article-date">
+  	<time datetime="2020-10-01T17:06:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>二刷这道题目，9月可以说是Leetcode的回溯月，做了挺多道dfs和bfs的题目，现以这道题为例子，对两种算法做一个总结<br><img src="/2020/10/02/Leetcode%E5%88%B7%E9%A2%98%E6%97%A5%E8%AE%B0113-%E8%B7%AF%E5%BE%84%E6%80%BB%E5%92%8CII/%E9%A2%98%E7%9B%AE.png" alt="1"></p>
+<a id="more"></a>
+<h1 id="方法一-深度优先搜索dfs"><a href="#方法一-深度优先搜索dfs" class="headerlink" title="方法一 深度优先搜索dfs"></a>方法一 深度优先搜索dfs</h1><p>深度优先搜索可以看做二叉树的前/中/后序遍历</p>
+<p>总体思路</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1. 创建一个列表用于储存结果</span><br><span class="line">2. 递归函数</span><br><span class="line">if 到达叶子节点(递归的终点)</span><br><span class="line">    if 当前路径的和等于要求的和</span><br><span class="line">        将目前的路径添加到结果集中</span><br><span class="line">    return</span><br><span class="line">if root的左边存在</span><br><span class="line">    递归 root.left</span><br><span class="line">if root的右边存在</span><br><span class="line">    递归 root.right</span><br></pre></td></tr></table></figure>
+
+<p>写法一(一刷写法)path变量做为dfs函数外部变量</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pathSum</span>(<span class="params">self, root: TreeNode, sum: int</span>) -&gt; List[List[int]]:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root: <span class="keyword">return</span> []</span><br><span class="line">        res = []</span><br><span class="line">        path = []</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">dfs</span>(<span class="params">root,tmp_sum</span>):</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> root: <span class="keyword">return</span></span><br><span class="line">            path.append(root.val)</span><br><span class="line">            tmp_sum += root.val</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> root.left <span class="keyword">and</span> <span class="keyword">not</span> root.right <span class="keyword">and</span> tmp_sum==sum:</span><br><span class="line">                res.append(path[:])</span><br><span class="line">            dfs(root.right,tmp_sum)</span><br><span class="line">            dfs(root.left,tmp_sum)</span><br><span class="line">            path.pop()</span><br><span class="line">            tmp_sum -= root.val</span><br><span class="line"></span><br><span class="line">        dfs(root,<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+<p>写法二(二刷写法)path做为dfs自己的参数，但是初始化需要注意不能用零初始化</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pathSum</span>(<span class="params">self, root: TreeNode, sum: int</span>) -&gt; List[List[int]]:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root: <span class="keyword">return</span> []</span><br><span class="line">        res = []</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">dfs</span>(<span class="params">root,tmp_sum,route</span>):</span></span><br><span class="line">            <span class="keyword">if</span> tmp_sum==sum <span class="keyword">and</span> <span class="keyword">not</span> root.left <span class="keyword">and</span> <span class="keyword">not</span> root.right:</span><br><span class="line">                res.append(route)</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            <span class="keyword">if</span> root.right:</span><br><span class="line">                dfs(root.right,tmp_sum+root.right.val,route+[root.right.val])</span><br><span class="line">            <span class="keyword">if</span> root.left:</span><br><span class="line">                dfs(root.left,tmp_sum+root.left.val,route+[root.left.val])</span><br><span class="line">        dfs(root,root.val,[root.val])</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/10/02/Leetcode%E5%88%B7%E9%A2%98%E6%97%A5%E8%AE%B0113-%E8%B7%AF%E5%BE%84%E6%80%BB%E5%92%8CII/dfs%E7%BB%93%E6%9E%9C.png" alt="1"></p>
+<h1 id="方法二-广度优先搜索bfs"><a href="#方法二-广度优先搜索bfs" class="headerlink" title="方法二 广度优先搜索bfs"></a>方法二 广度优先搜索bfs</h1><p>bfs思路</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">1. 创建一个用于保存结果的列表res和一个队列queue用于bfs搜索</span><br><span class="line">队列的结构为[(),(),()...],其中()中有三个元素，分别为node,route和tmp_sum</span><br><span class="line">node表示目前搜索到的树节点，route表示搜索的路径，tmp_sum表示当前的路径和</span><br><span class="line">2. bfs</span><br><span class="line">while queue不为空:</span><br><span class="line">    #如果node为空，即已完成了一条路径的搜索，且已完成了判定(第二个if)，所以直接continue</span><br><span class="line">    if node为空:</span><br><span class="line">        continue</span><br><span class="line">    if 到达叶子结点 and 路径之和达标:</span><br><span class="line">        将路径保存到res中</span><br><span class="line">    将(当前结点的右孩子,route+[当前结点的值],tmp_sum+当前结点的值)加入queue中</span><br><span class="line">    将(当前结点的左孩子,route+[当前结点的值],tmp_sum+当前结点的值)加入queue中</span><br><span class="line">    #注: 不用管当前结点的左右孩子是否是空，如果是空会在第一个if中得到解决(直接continue了)</span><br></pre></td></tr></table></figure>
+
+<p>bfs写法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pathSum</span>(<span class="params">self, root: TreeNode, sum: int</span>) -&gt; List[List[int]]:</span></span><br><span class="line">        res = []</span><br><span class="line">        queue = [(root,[],<span class="number">0</span>)]</span><br><span class="line">        <span class="keyword">while</span> queue:</span><br><span class="line">            node,route,tmp_sum = queue.pop(<span class="number">0</span>)</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node.right <span class="keyword">and</span> <span class="keyword">not</span> node.left <span class="keyword">and</span> tmp_sum+node.val==sum:</span><br><span class="line">                    res.append(route+[node.val])</span><br><span class="line">            queue.append((node.right,route+[node.val],tmp_sum+node.val))</span><br><span class="line">            queue.append((node.left,route+[node.val],tmp_sum+node.val))</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/10/02/Leetcode%E5%88%B7%E9%A2%98%E6%97%A5%E8%AE%B0113-%E8%B7%AF%E5%BE%84%E6%80%BB%E5%92%8CII/bfs%E7%BB%93%E6%9E%9C.png" alt="1"></p>
+<hr>
+<h1 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h1><p>博客的写作的确对于技术的提升有非常大的帮助，在写作的过程中会逼迫自己思考更深入的细节，帮助自己搞懂尽量多的知识点</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">hexo配置</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Python 算法 dfs bfs Leetcode</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/10/02/Leetcode%E5%88%B7%E9%A2%98%E6%97%A5%E8%AE%B0113-%E8%B7%AF%E5%BE%84%E6%80%BB%E5%92%8CII/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2020/09/21/%E8%AE%B8%E4%B9%85%E4%B8%8D%E8%A7%81%EF%BC%8C%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">许久不见，我的博客</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80-%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2dfs"><span class="toc-number">1.</span> <span class="toc-text">方法一 深度优先搜索dfs</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C-%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2bfs"><span class="toc-number">2.</span> <span class="toc-text">方法二 广度优先搜索bfs</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-number">3.</span> <span class="toc-text">写在最后</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
+  
+  <div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Leetcode刷题日记113-路径总和II" data-title="Leetcode刷题日记113.路径总和II" data-url="http://yoursite.com/2020/10/02/Leetcode%E5%88%B7%E9%A2%98%E6%97%A5%E8%AE%B0113-%E8%B7%AF%E5%BE%84%E6%80%BB%E5%92%8CII/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ture"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+  
+  
+  
+  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: "http://yoursite.com/2020/10/02/Leetcode%E5%88%B7%E9%A2%98%E6%97%A5%E8%AE%B0113-%E8%B7%AF%E5%BE%84%E6%80%BB%E5%92%8CII/", 
+    sourceId: "Leetcode刷题日记113-路径总和II",
+    productKey: "true",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="//img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
   
 
-    
+  
+  <div id="SOHUCS" sid="Leetcode刷题日记113-路径总和II" ></div> 
+<script charset="utf-8" type="text/javascript" src="//changyan.sohu.com/upload/changyan.js" ></script>
+<script type="text/javascript">
+    window.changyan.api.config({
+        appid: "true",
+        conf: "true"
+    });
+</script>
+</script>
+  
+
+  
+
+  
 
 
           </div>
@@ -220,9 +407,9 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,
