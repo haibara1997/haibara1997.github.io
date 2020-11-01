@@ -8,18 +8,22 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>异常值检测论文读书笔记 | Haibara的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1. Deep Learning for Anomaly Detection: A Review">
+  <meta name="description" content="异常值检测的常用方法异常值检测的方法有很多 1. 基于时间序列模型的方法基于时间序列模型的方法有ARIMA模型&#x2F;Holt-Winters指数平滑法和TSCI方法ARIMA模型通过拟合出相应的模型，根据误差(预测值和实际值之差)判断出异常值，R语言的tsoutliers包可以实现基于ARIMA模型的异常值检测功能。TSCI方法将时间序列分解成趋势T(trend)、周期S(season)、循环波动C(">
 <meta property="og:type" content="article">
 <meta property="og:title" content="异常值检测论文读书笔记">
 <meta property="og:url" content="http://yoursite.com/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Haibara的博客">
-<meta property="og:description" content="1. Deep Learning for Anomaly Detection: A Review">
+<meta property="og:description" content="异常值检测的常用方法异常值检测的方法有很多 1. 基于时间序列模型的方法基于时间序列模型的方法有ARIMA模型&#x2F;Holt-Winters指数平滑法和TSCI方法ARIMA模型通过拟合出相应的模型，根据误差(预测值和实际值之差)判断出异常值，R语言的tsoutliers包可以实现基于ARIMA模型的异常值检测功能。TSCI方法将时间序列分解成趋势T(trend)、周期S(season)、循环波动C(">
 <meta property="og:locale">
-<meta property="article:published_time" content="2020-10-04T03:18:57.000Z">
-<meta property="article:modified_time" content="2020-10-04T03:20:52.827Z">
+<meta property="og:image" content="http://yoursite.com/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%BB%9F%E8%AE%A1%E6%A8%A1%E5%9E%8B%E5%A4%84%E7%90%86%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E6%95%B0%E6%8D%AE%E6%B5%81%E7%A8%8B.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%AD%A4%E7%8B%AC%E6%A3%AE%E6%9E%97%E7%AE%97%E6%B3%95.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E7%89%B9%E5%BE%81%E7%9A%84%E6%9E%84%E9%80%A0.png">
+<meta property="article:published_time" content="2020-10-04T03:18:57.771Z">
+<meta property="article:modified_time" content="2020-11-01T09:53:18.918Z">
 <meta property="article:author" content="Haibara">
 <meta property="article:tag" content="异常值检测 深度学习">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%BB%9F%E8%AE%A1%E6%A8%A1%E5%9E%8B%E5%A4%84%E7%90%86%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E6%95%B0%E6%8D%AE%E6%B5%81%E7%A8%8B.png">
   
     <link rel="alternative" href="/atom.xml" title="Haibara的博客" type="application/atom+xml">
   
@@ -160,14 +164,23 @@
 
         
         <a href="/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="archive-article-date">
-  	<time datetime="2020-10-04T03:18:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-04</time>
+  	<time datetime="2020-10-04T03:18:57.771Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-04</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="1-Deep-Learning-for-Anomaly-Detection-A-Review"><a href="#1-Deep-Learning-for-Anomaly-Detection-A-Review" class="headerlink" title="1. Deep Learning for Anomaly Detection: A Review"></a>1. Deep Learning for Anomaly Detection: A Review</h1>
+        <h1 id="异常值检测的常用方法"><a href="#异常值检测的常用方法" class="headerlink" title="异常值检测的常用方法"></a>异常值检测的常用方法</h1><p>异常值检测的方法有很多</p>
+<h2 id="1-基于时间序列模型的方法"><a href="#1-基于时间序列模型的方法" class="headerlink" title="1. 基于时间序列模型的方法"></a>1. 基于时间序列模型的方法</h2><p>基于时间序列模型的方法有ARIMA模型/Holt-Winters指数平滑法和TSCI方法<br>ARIMA模型通过拟合出相应的模型，根据误差(预测值和实际值之差)判断出异常值，R语言的tsoutliers包可以实现基于ARIMA模型的异常值检测功能。<br>TSCI方法将时间序列分解成趋势T(trend)、周期S(season)、循环波动C(cycle)和不规则波动I(Irregular)，残差一般是稳定序列，然后对于residual部分进行异常值分析。该类方法是一种无监督的检测</p>
+<p>下图展示了时间序列模型方法处理时序数据的基本流程</p>
+<p><img src="/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%BB%9F%E8%AE%A1%E6%A8%A1%E5%9E%8B%E5%A4%84%E7%90%86%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E6%95%B0%E6%8D%AE%E6%B5%81%E7%A8%8B.png"></p>
+<h2 id="2-基于机器学习的模型"><a href="#2-基于机器学习的模型" class="headerlink" title="2. 基于机器学习的模型"></a>2. 基于机器学习的模型</h2><p>基于机器学习的模型有孤独森林和one-class svm，这两个方法都是无监督学习的方法<br>孤独森林的算法的思想：将数据用随机超平面切割，切一次可以生成两个子空间，不断执行切割，直到每个子空间里面只有一个数据点为止，对于数据中的正常值来说，需要切割很多次才能完成划分，对于异常值来说，只需要很少的切割次数即可完成划分。因此异常值在孤独森林输出的树中深度很小，而正常值在孤独森林输出的树中深度一般很大，远高于异常值在孤独森林中树的深度，可以通过比较小的深度来筛选出异常值。</p>
+<p><img src="/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%AD%A4%E7%8B%AC%E6%A3%AE%E6%9E%97%E7%AE%97%E6%B3%95.png"></p>
+<p>one-class svm算法思想(以SVDD为例)说明：在特征空间中，采用一个超球体(不是超平面)来划分数据，该算法目标在于最小化该超球体的体积，从而最小化异常点数据的影响。</p>
+<p>假设产生的超球体参数为中心<code>o</code>和对应的超球体半径<code>r&gt;0</code>，超球体体积V(r)被最小化，引入一个惩罚系数为C的松弛变量$\zeta_i$<br>优化问题数学表达式如下：<br>$minV(r) + C\sum^{m}_{i=1}\zeta_i$<br>$s.t.\ \lVert x_i - o \rVert_2 \leq r + \zeta_i,i=1,2,3…m$<br>$\ \ \ \ \ \ \ \ \ \zeta_i\ge 0,i=1,2,3…m $<br>此处参考: <a target="_blank" rel="noopener" href="https://www.cnblogs.com/wj-1314/p/10701708.html">https://www.cnblogs.com/wj-1314/p/10701708.html</a></p>
+<p><img src="/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E7%89%B9%E5%BE%81%E7%9A%84%E6%9E%84%E9%80%A0.png"><br>图参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/142320349">https://zhuanlan.zhihu.com/p/142320349</a></p>
+<h1 id="1-Deep-Learning-for-Anomaly-Detection-A-Review"><a href="#1-Deep-Learning-for-Anomaly-Detection-A-Review" class="headerlink" title="1. Deep Learning for Anomaly Detection: A Review"></a>1. Deep Learning for Anomaly Detection: A Review</h1>
       
 
       
@@ -309,7 +322,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Deep-Learning-for-Anomaly-Detection-A-Review"><span class="toc-number">1.</span> <span class="toc-text">1. Deep Learning for Anomaly Detection: A Review</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E7%9A%84%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">异常值检测的常用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">1. 基于时间序列模型的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%9F%BA%E4%BA%8E%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.2.</span> <span class="toc-text">2. 基于机器学习的模型</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Deep-Learning-for-Anomaly-Detection-A-Review"><span class="toc-number">2.</span> <span class="toc-text">1. Deep Learning for Anomaly Detection: A Review</span></a></li></ol>
                     </div>
                 </span>
             </div>
