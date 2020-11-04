@@ -8,12 +8,12 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>异常值检测论文读书笔记 | Haibara的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="异常值检测的常用方法异常值检测的方法有很多 1. 基于时间序列模型的方法基于时间序列模型的方法有ARIMA模型&#x2F;Holt-Winters指数平滑法和TSCI方法">
+  <meta name="description" content="异常值检测的常用方法异常值检测的方法有很多,主要有四类，基于时间序列模型的方法，基于机器学习模型的方法，基于深度学习模型的方法，基于图聚类的方法(louvain算法，synchrotrap算法)。通过近一段时间对于文献的阅读，对这几大类方法做了梳理，重点放在深度学习异常值检测这一领域中。 1. 基于时间序列模型的方法基于时间序列模型的方法有ARIMA模型&#x2F;Holt-Winters指数平滑法和TSC">
 <meta property="og:type" content="article">
 <meta property="og:title" content="异常值检测论文读书笔记">
 <meta property="og:url" content="http://yoursite.com/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Haibara的博客">
-<meta property="og:description" content="异常值检测的常用方法异常值检测的方法有很多 1. 基于时间序列模型的方法基于时间序列模型的方法有ARIMA模型&#x2F;Holt-Winters指数平滑法和TSCI方法">
+<meta property="og:description" content="异常值检测的常用方法异常值检测的方法有很多,主要有四类，基于时间序列模型的方法，基于机器学习模型的方法，基于深度学习模型的方法，基于图聚类的方法(louvain算法，synchrotrap算法)。通过近一段时间对于文献的阅读，对这几大类方法做了梳理，重点放在深度学习异常值检测这一领域中。 1. 基于时间序列模型的方法基于时间序列模型的方法有ARIMA模型&#x2F;Holt-Winters指数平滑法和TSC">
 <meta property="og:locale">
 <meta property="og:image" content="http://yoursite.com/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%BB%9F%E8%AE%A1%E6%A8%A1%E5%9E%8B%E5%A4%84%E7%90%86%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E6%95%B0%E6%8D%AE%E6%B5%81%E7%A8%8B.png">
 <meta property="og:image" content="http://yoursite.com/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%AD%A4%E7%8B%AC%E6%A3%AE%E6%9E%97%E7%AE%97%E6%B3%95.png">
@@ -23,9 +23,12 @@
 <meta property="og:image" content="http://yoursite.com/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8.png">
 <meta property="og:image" content="http://yoursite.com/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8.png">
 <meta property="og:image" content="http://yoursite.com/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/timeEnrichment1.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/timeEnrichment2.png">
 <meta property="og:image" content="http://yoursite.com/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E7%89%B9%E5%BE%81%E7%9A%84%E6%9E%84%E9%80%A0.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88.png">
 <meta property="article:published_time" content="2020-10-04T03:18:57.771Z">
-<meta property="article:modified_time" content="2020-11-03T16:14:00.761Z">
+<meta property="article:modified_time" content="2020-11-04T17:27:39.945Z">
 <meta property="article:author" content="Haibara">
 <meta property="article:tag" content="异常值检测 深度学习">
 <meta name="twitter:card" content="summary">
@@ -177,7 +180,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="异常值检测的常用方法"><a href="#异常值检测的常用方法" class="headerlink" title="异常值检测的常用方法"></a>异常值检测的常用方法</h1><p>异常值检测的方法有很多</p>
+        <h1 id="异常值检测的常用方法"><a href="#异常值检测的常用方法" class="headerlink" title="异常值检测的常用方法"></a>异常值检测的常用方法</h1><p>异常值检测的方法有很多,主要有四类，基于时间序列模型的方法，基于机器学习模型的方法，基于深度学习模型的方法，基于图聚类的方法(louvain算法，synchrotrap算法)。通过近一段时间对于文献的阅读，对这几大类方法做了梳理，重点放在深度学习异常值检测这一领域中。</p>
 <h2 id="1-基于时间序列模型的方法"><a href="#1-基于时间序列模型的方法" class="headerlink" title="1. 基于时间序列模型的方法"></a>1. 基于时间序列模型的方法</h2><p>基于时间序列模型的方法有ARIMA模型/Holt-Winters指数平滑法和TSCI方法</p>
 <a id="more"></a>
 <p>ARIMA模型通过拟合出相应的模型，根据误差(预测值和实际值之差)判断出异常值，R语言的tsoutliers包可以实现基于ARIMA模型的异常值检测功能。<br>TSCI方法将时间序列分解成趋势T(trend)、周期S(season)、循环波动C(cycle)和不规则波动I(Irregular)，残差一般是稳定序列，然后对于residual部分进行异常值分析。该类方法是一种无监督的检测</p>
@@ -187,7 +190,7 @@
 <p><img src="/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%AD%A4%E7%8B%AC%E6%A3%AE%E6%9E%97%E7%AE%97%E6%B3%95.png"></p>
 <p>one-class svm算法思想(以SVDD为例)说明：在特征空间中，采用一个超球体(不是超平面)来划分数据，该算法目标在于最小化该超球体的体积，从而最小化异常点数据的影响。</p>
 <p>假设产生的超球体参数为中心<code>o</code>和对应的超球体半径<code>r&gt;0</code>，超球体体积V(r)被最小化，引入一个惩罚系数为C的松弛变量$\zeta_i$<br>优化问题数学表达式如下：<br>$minV(r) + C\sum^{m}_{i=1}\zeta_i$<br>$s.t.\ \lVert x_i - o \rVert_2 \leq r + \zeta_i,i=1,2,3…m$<br>$\ \ \ \ \ \ \ \ \ \zeta_i\ge 0,i=1,2,3…m $<br>此处参考: <a target="_blank" rel="noopener" href="https://www.cnblogs.com/wj-1314/p/10701708.html">https://www.cnblogs.com/wj-1314/p/10701708.html</a></p>
-<h2 id="3-基于深度学习的模型"><a href="#3-基于深度学习的模型" class="headerlink" title="3. 基于深度学习的模型"></a>3. 基于深度学习的模型</h2><p>深度学习异常值检测是一个很大的领域，也是今年来的研究趋势。相比传统的机器学习方法，该方法对于异常值检测有以下优点：有更高的召回率、在高维数据的检测中有更高的鲁棒性，对于数据序列性的利用程度更高，（半监督方法过于依赖自身的判定空间，忽略了数据本身）。<br>根据文献 Deep Learning for Anomaly Detection: A Review 基于深度学习的异常值检测大致分类如下<br><img src="/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E7%9A%84%E5%88%86%E7%B1%BB.png"><br>图源文献 Deep Learning for Anomaly Detection: A Review GUANSONG PANG,etc ACM Comput. Surv</p>
+<h2 id="3-基于深度学习的模型"><a href="#3-基于深度学习的模型" class="headerlink" title="3. 基于深度学习的模型"></a>3. 基于深度学习的模型</h2><p>深度学习异常值检测是一个很大的领域，也是近年来的研究趋势。相比传统的机器学习方法，该方法对于异常值检测有以下优点：有更高的召回率、在高维数据的检测中有更高的鲁棒性，对于数据序列性的利用程度更高，（半监督方法过于依赖自身的判定空间，忽略了数据本身）。<br>根据文献 Deep Learning for Anomaly Detection: A Review 基于深度学习的异常值检测大致分类如下<br><img src="/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E7%9A%84%E5%88%86%E7%B1%BB.png"><br>图源文献 Deep Learning for Anomaly Detection: A Review GUANSONG PANG,etc ACM Comput. Surv</p>
 <p>主要有以下几类:<br>一，深度学习用于特征提取(Deep learning for feature extraction)<br>二，学习用于表达(相对于异常态)的特征(Learning feature representations of normality)<br>三，端到端异常值打分学习(End-to-end anomaly score learning)</p>
 <p><img src="/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E4%B8%89%E7%B1%BB%E6%96%B9%E6%B3%95%E7%9A%84%E6%B5%81%E7%A8%8B.png"><br>图源文献 Deep Learning for Anomaly Detection: A Review GUANSONG PANG,etc ACM Comput. Surv</p>
 <p>目前第一类方法由于效果不稳定，第三类方法由于较新提出，仍在基础研究阶段，所以这两类方法在实践中不是很适合，目前第二类方法的相关研究比较充分，更适合做工程。而在第二类方法中，又以Autoencoder(自编码器)为代表的模型很受研究者喜欢，基于自编码器发展出了CNN-AE、LSTM-AE等模型</p>
@@ -195,7 +198,16 @@
 <p><img src="/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8.png"><br>图2 卷积神经网络自编码器<br>来自文献Outlier Detection for Multidimensional Time Series using Deep Neural Networks</p>
 <p><img src="/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8.png"><br>图3 循环神经网络自编码器<br>来自文献Outlier Detection for Multidimensional Time Series using Deep Neural Networks</p>
 <p>AE框架的异常值检测方案<br><img src="/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E6%B5%81%E7%A8%8B%E5%9B%BE.png"></p>
-<p><img src="/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E7%89%B9%E5%BE%81%E7%9A%84%E6%9E%84%E9%80%A0.png"><br>图参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/142320349">https://zhuanlan.zhihu.com/p/142320349</a></p>
+<p>关于AE框架检测方案中的计算、提取时序数据的特征信息的说明：输入数据维度为(a,b,c),a是用户特征维度(e.g.精度，维度，海拔，市区或郊区),b是时间序列，c是用户的数量，首先把时序数据进行滑动窗口化的处理，定义一个滑动窗口，令其长度为$b$，滑动窗口每次移动的长度为$\lfloor \frac{2}{b} \rfloor$，最后得到$\lfloor \frac{2C-b}{b} \rfloor$个时间窗口，C为时间序列的总长度。然后对得到的每一个窗口数据，计算这段时间窗口的特征，时间窗口的特征主要分为两类：NOR和DON，定义如下<br>$wd_i$是某一时间窗口在某一变量(如维度)下的数据，记为<br>$$wd_i = &lt;S_i,S_{i+1},…,S_{i+b-1}&gt;$$<br>则NOR在j这一维度下的定义记为<br>$$ NOR^{j} (wd_{i}) = $$</p>
+<p>$$ || wd_i^{j}_2 || $$</p>
+<p>$$ = (s_i^{j})^2+(s_{i+1}^{j})^2} + … + (s_{i+b-1}^{j})^{2} $$</p>
+<p>$DON$表示$NOR_i$和$NOR_{i+1}$之间的差异，用差值描述差异的程度<br>对于第$j$个维度的变量下的$wd_i$记<br>$$ DON^{j}(wd_i) = NOR^{j}(wd_i) - NOR^{j}(wd_{i-1}) $$</p>
+<p>对于$NOR$，计算以下8个统计特征:平均值、最小值、最大值、下四分位数、上四分位数、中位数、标准差、极差、峰值因子</p>
+<p>计算完$DON$和$NOR$以后，将得到的数据再重复进行一次先前做的变换，即再设定一个滑动窗口，然后计算该滑动窗口下的$DON$和$NOR$</p>
+<p>将上述流程用图表示为如下<br><img src="/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/timeEnrichment1.png"><br>图源文献Outlier Detection for Multidimensional Time Series using Deep Neural Networks</p>
+<p>其中数据形状的变化可表示为<br><img src="/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/timeEnrichment2.png"></p>
+<p>关于时间序列特征的构造，可参考下面的这个脑图<br><img src="/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E7%89%B9%E5%BE%81%E7%9A%84%E6%9E%84%E9%80%A0.png"><br>图参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/142320349">https://zhuanlan.zhihu.com/p/142320349</a></p>
+<h2 id="4-基于图聚类方法的模型"><a href="#4-基于图聚类方法的模型" class="headerlink" title="4.基于图聚类方法的模型"></a>4.基于图聚类方法的模型</h2><h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5.总结"></a>5.总结</h2><p><img src="/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88.png"></p>
 
       
 
@@ -338,7 +350,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E7%9A%84%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">异常值检测的常用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">1. 基于时间序列模型的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%9F%BA%E4%BA%8E%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.2.</span> <span class="toc-text">2. 基于机器学习的模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.3.</span> <span class="toc-text">3. 基于深度学习的模型</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E7%9A%84%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">异常值检测的常用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">1. 基于时间序列模型的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%9F%BA%E4%BA%8E%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.2.</span> <span class="toc-text">2. 基于机器学习的模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.3.</span> <span class="toc-text">3. 基于深度学习的模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%9F%BA%E4%BA%8E%E5%9B%BE%E8%81%9A%E7%B1%BB%E6%96%B9%E6%B3%95%E7%9A%84%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.4.</span> <span class="toc-text">4.基于图聚类方法的模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%80%BB%E7%BB%93"><span class="toc-number">1.5.</span> <span class="toc-text">5.总结</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
