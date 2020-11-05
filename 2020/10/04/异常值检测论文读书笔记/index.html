@@ -28,7 +28,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E7%89%B9%E5%BE%81%E7%9A%84%E6%9E%84%E9%80%A0.png">
 <meta property="og:image" content="http://yoursite.com/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88.png">
 <meta property="article:published_time" content="2020-10-04T03:18:57.771Z">
-<meta property="article:modified_time" content="2020-11-04T17:27:39.945Z">
+<meta property="article:modified_time" content="2020-11-05T01:57:31.715Z">
 <meta property="article:author" content="Haibara">
 <meta property="article:tag" content="异常值检测 深度学习">
 <meta name="twitter:card" content="summary">
@@ -207,7 +207,7 @@
 <p>将上述流程用图表示为如下<br><img src="/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/timeEnrichment1.png"><br>图源文献Outlier Detection for Multidimensional Time Series using Deep Neural Networks</p>
 <p>其中数据形状的变化可表示为<br><img src="/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/timeEnrichment2.png"></p>
 <p>关于时间序列特征的构造，可参考下面的这个脑图<br><img src="/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E7%89%B9%E5%BE%81%E7%9A%84%E6%9E%84%E9%80%A0.png"><br>图参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/142320349">https://zhuanlan.zhihu.com/p/142320349</a></p>
-<h2 id="4-基于图聚类方法的模型"><a href="#4-基于图聚类方法的模型" class="headerlink" title="4.基于图聚类方法的模型"></a>4.基于图聚类方法的模型</h2><h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5.总结"></a>5.总结</h2><p><img src="/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88.png"></p>
+<h2 id="4-基于图聚类方法的模型"><a href="#4-基于图聚类方法的模型" class="headerlink" title="4.基于图聚类方法的模型"></a>4.基于图聚类方法的模型</h2><h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5.总结"></a>5.总结</h2><p>综合上面的方法，可以挑一部分算法并对这些方法的结果做一个模型融合，可以是Stacking或Blending，各个模型之间取长补短，提高整个系统结果的鲁棒性，这里挑了三类方法：图聚类算法、深度学习自编码器算法、机器学习算法，三者都是无监督算法，不需要数据标签，适合大数据情况下的异常值检测<br><img src="/2020/10/04/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88.png"></p>
 
       
 
