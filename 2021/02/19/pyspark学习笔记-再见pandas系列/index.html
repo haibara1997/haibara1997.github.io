@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="参考课程：Spark编程基础(Python版)厦门大学 林子雨假设已有python程序WordCount.py，现将程序提交至Spark上运行 spark独立应用程序代码模板">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pyspark学习笔记(再见pandas系列)">
+<meta property="og:url" content="http://yoursite.com/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/index.html">
+<meta property="og:site_name" content="Haibara的博客">
+<meta property="og:description" content="参考课程：Spark编程基础(Python版)厦门大学 林子雨假设已有python程序WordCount.py，现将程序提交至Spark上运行 spark独立应用程序代码模板">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/RDD创建.png">
+<meta property="og:image" content="http://yoursite.com/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/RDD创建2.png">
+<meta property="og:image" content="http://yoursite.com/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/未分区的两表连接.png">
+<meta property="og:image" content="http://yoursite.com/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/分区后的两表连接.png">
+<meta property="og:image" content="http://yoursite.com/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/sortBy例子.png">
+<meta property="og:image" content="http://yoursite.com/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/综合案例1textFile.png">
+<meta property="og:image" content="http://yoursite.com/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/综合案例1flatMap.png">
+<meta property="og:image" content="http://yoursite.com/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/groupByKey.png">
+<meta property="og:image" content="http://yoursite.com/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/综合案例2键值对的变化.png">
+<meta property="og:image" content="http://yoursite.com/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/DataFrame和RDD区别.png">
+<meta property="article:published_time" content="2021-02-19T12:42:43.000Z">
+<meta property="article:modified_time" content="2021-02-21T17:16:04.389Z">
+<meta property="article:author" content="Haibara">
+<meta property="article:tag" content="pyspark">
+<meta property="article:tag" content="spark">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/RDD创建.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>pyspark学习笔记(再见pandas系列) | Haibara的博客</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2dbe112d96e42974bd438d35365f0d71";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Haibara的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%E9%AB%98%E6%9C%A8%E5%90%8C%E5%AD%A62.jpeg">
+      <meta itemprop="name" content="Haibara">
+      <meta itemprop="description" content="每个人都是一座孤岛">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haibara的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          pyspark学习笔记(再见pandas系列)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-02-19 20:42:43" itemprop="dateCreated datePublished" datetime="2021-02-19T20:42:43+08:00">2021-02-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-02-22 01:16:04" itemprop="dateModified" datetime="2021-02-22T01:16:04+08:00">2021-02-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>参考课程：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1oE411s7h7?p=19">Spark编程基础(Python版)厦门大学 林子雨</a><br>假设已有<code>python</code>程序<code>WordCount.py</code>，现将程序提交至<code>Spark</code>上运行</p>
+<h1 id="spark独立应用程序代码模板"><a href="#spark独立应用程序代码模板" class="headerlink" title="spark独立应用程序代码模板"></a>spark独立应用程序代码模板</h1><a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">spark-submit</span><br><span class="line"> -master &lt;master-url&gt;</span><br><span class="line"> -deploy-mode &lt;deploy-mode&gt;</span><br><span class="line"> #其他参数</span><br><span class="line"> &lt;application-file&gt;  # Python代码文件</span><br><span class="line"> [application-arguments]  # 传递给主类的主方法的参数</span><br></pre></td></tr></table></figure>
+<p>执行<code>spark-submit --help</code>命令，获取完整的选项列表<br>其中常用的一些参数</p>
+<ul>
+<li>yarn<br><code>yarn -client</code>以客户端模式连接YARN集群（单机模式），集群的位置可以再HADOOP_CONF_DIR环境变量中找到<br><code>yarn -cluster</code>以集群模式连接YARN集群，集群的位置可以再HADOOP_CONF_DIR环境变量中找到<h2 id="一个提交的例子"><a href="#一个提交的例子" class="headerlink" title="一个提交的例子"></a>一个提交的例子</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash">/usr/<span class="built_in">local</span>/spark/bin/spark-submit \</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> /usr/<span class="built_in">local</span>/spark/mycode/python/WordCount.py</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>例1 wordcount程序</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line">conf = SparkConf().setMaster(<span class="string">&quot;local&quot;</span>).setAppName(<span class="string">&quot;My App&quot;</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line">logFile = <span class="string">&quot;file:///usr/local/spark/README.md&quot;</span></span><br><span class="line">logData = sc.textFile(logFile, <span class="number">2</span>).cache()  <span class="comment"># 生成一个Rdd</span></span><br><span class="line">numAs = logData.filter(<span class="keyword">lambda</span> line: <span class="string">&quot;a&quot;</span> <span class="keyword">in</span> line).count()</span><br><span class="line">numBs = logData.filter(<span class="keyword">lambda</span> line: <span class="string">&quot;b&quot;</span> <span class="keyword">in</span> line).count()</span><br><span class="line">print(<span class="string">&quot;Lines with a: %s, Lines with b: %s&quot;</span> % (numAs, numBs))</span><br></pre></td></tr></table></figure><br>执行结果如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Lines with a:62, Lines with b:30</span><br></pre></td></tr></table></figure></p>
+<h1 id="RDD编程"><a href="#RDD编程" class="headerlink" title="RDD编程"></a>RDD编程</h1><p>不同于Hadoop的Map，Reduce，RDD是在内存中的<br><img src="/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/RDD创建.png" alt><br>橙色部分为RDD所属模块</p>
+<h2 id="RDD创建"><a href="#RDD创建" class="headerlink" title="RDD创建"></a>RDD创建</h2><ul>
+<li>从文件系统中加载(本地，HDFS，云端)<br>Spark的SparkContext通过textFile()读取数据生成内存中的RDD<ul>
+<li>例1 本地文件系统中加载创建RDD<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line">conf = SparkConf().setMaster(<span class="string">&quot;local&quot;</span>).setAppName(<span class="string">&quot;My App&quot;</span>)</span><br><span class="line">sc = SparkContext(conf=conf)  <span class="comment"># SparkContext是指挥所的指挥官</span></span><br><span class="line">lines = sc.textFile(<span class="string">&quot;file:///usr/local/spark/mycode/rdd/word.txt&quot;</span>)  <span class="comment"># 本地文件系统需要3个斜杠</span></span><br><span class="line"><span class="comment"># lines.foreach(print)  # 打印每行元素</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>从HDFS中加载<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line">conf = SparkConf().setMaster(<span class="string">&quot;local&quot;</span>).setAppName(<span class="string">&quot;My App&quot;</span>)</span><br><span class="line">sc = SparkContext(conf=conf)  <span class="comment"># SparkContext是指挥所的指挥官</span></span><br><span class="line">lines = sc.textFile(<span class="string">&quot;hdfs://localhost:9000/user/hadoop/word.txt&quot;</span>)</span><br></pre></td></tr></table></figure>
+下图表示通过textFile()后发生了的变化：假设文件只有3行，经过textFile()后创建了三个RDD元素，类型是字符串<br><img src="/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/RDD创建2.png" alt></li>
+<li>通过并行集合(数组)<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line">rdd = sc.parallelize(array)</span><br><span class="line">rdd.foreach(<span class="keyword">print</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h2><h3 id="转换操作-Transformation"><a href="#转换操作-Transformation" class="headerlink" title="转换操作 Transformation"></a>转换操作 Transformation</h3><p><strong>常用操作</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">操作</th>
+<th style="text-align:left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">filter(func)</td>
+<td style="text-align:left">筛选出满足函数func的元素，并范围一个新的数据集</td>
+</tr>
+<tr>
+<td style="text-align:left">map(func)</td>
+<td style="text-align:left">将每个元素传递到函数func中，并将结果返回为一个新的数据集</td>
+</tr>
+<tr>
+<td style="text-align:left">flatMap</td>
+<td style="text-align:left">与map()相似，但每个输入元素都可以映射到0或多个输出结果</td>
+</tr>
+<tr>
+<td style="text-align:left">groupByKey()</td>
+<td style="text-align:left">应用于(K,V)键值对的数据集时，返回一个新的(K, Iterable)形式的数据集</td>
+</tr>
+<tr>
+<td style="text-align:left">reduceByKey(func)</td>
+<td style="text-align:left">应用于(K,V)键值对的数据集时，返回一个新的(K,V)形式的数据集，其中每个值是将每个key传递到函数func中进行聚合后的结果</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="行动操作-Action"><a href="#行动操作-Action" class="headerlink" title="行动操作 Action"></a>行动操作 Action</h3><p><strong>常见的操作</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">操作</th>
+<th style="text-align:left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">count()</td>
+<td style="text-align:left">返回数据集中的元素个数</td>
+</tr>
+<tr>
+<td style="text-align:left">collect()</td>
+<td style="text-align:left">以数组形式返回数据集中的所有元素</td>
+</tr>
+<tr>
+<td style="text-align:left">first()</td>
+<td style="text-align:left">返回数据集中的第一个元素</td>
+</tr>
+<tr>
+<td style="text-align:left">take(n)</td>
+<td style="text-align:left">以数组的形式返回数据集中的前n个元素</td>
+</tr>
+<tr>
+<td style="text-align:left">reduce(func)</td>
+<td style="text-align:left">通过函数func(输入两个参数并返回一个值)聚合数据集中的元素</td>
+</tr>
+<tr>
+<td style="text-align:left">foreach(func)</td>
+<td style="text-align:left">将数据集中的每个元素传递到函数func中运行</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="惰性机制"><a href="#惰性机制" class="headerlink" title="惰性机制"></a>惰性机制</h3><p>在spark中，转换操作并没有真正地发生计算，只记录转换的轨迹，直到遇到动作类型操作，才进行从头到尾的计算</p>
+<h2 id="如何持久化"><a href="#如何持久化" class="headerlink" title="如何持久化"></a>如何持久化</h2><p>对于迭代计算而言，经常需要多次重复使用同一组数据，如果不做持久化，会多次重复生成同一个数据<br>使用persist()方法对一个RDD标记为持久化。持久化后的RDD将会被保留在计算节点的内存中被后面的行动操作重复使用。<br>persist()标记后的RDD并不会马上计算生成RDD并把它持久化，等第一次行动操作过后即可持久化</p>
+<ol>
+<li>持久化方法<br>(1) .persist(MEMORY_ONLY)方法<br>仅存在内存中，内存不足，替换内容<br>该方法的实现也可以用.cache()代替<br>即<code>RDD.cache()</code> = <code>RDD.persist(MEMORY_ONLY)</code><br>(2) .persist(MEMORY_AND_DISK)方法<br>内存不足，存放磁盘</li>
+<li>把持久化的RDD从缓存中移除<br>.unpersist()方法</li>
+</ol>
+<p><strong>RDD示例</strong></p>
+<ul>
+<li>未优化<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">list = [<span class="string">&quot;Hadoop&quot;</span>, <span class="string">&quot;Spark&quot;</span>, <span class="string">&quot;Hive&quot;</span>]</span><br><span class="line">rdd = sc.parallelize(list)</span><br><span class="line">print(rdd.count())  <span class="comment"># 行动操作，触发一次真正从头到尾的计算</span></span><br><span class="line">print(<span class="string">&quot;,&quot;</span>.join(rdd.collect()))  <span class="comment"># 行动操作，触发一次真正从头到尾的计算</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">3</span><br><span class="line">Hadoop,Spark,Hive</span><br></pre></td></tr></table></figure></li>
+<li>优化后<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">list = [<span class="string">&quot;Hadoop&quot;</span>, <span class="string">&quot;Spark&quot;</span>, <span class="string">&quot;Hive&quot;</span>]</span><br><span class="line">rdd = sc.parallelize(list)</span><br><span class="line">rdd.cache()  <span class="comment"># 这里并不会缓存rdd，因为这是rdd还没有被计算生成</span></span><br><span class="line">print(rdd.count())  <span class="comment"># 第一次行动操作，出发一次真正从头到尾的计算，这是上面的rdd.cache()才会被执行，把这个rdd放到缓存中</span></span><br><span class="line">print(<span class="string">&quot;,&quot;</span>.join(rdd.collect()))  <span class="comment"># 第二次行动操作，不需要出发从头到尾的计算，只需要重复使用上面缓存中的rdd</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="如何分区"><a href="#如何分区" class="headerlink" title="如何分区"></a>如何分区</h2><p>分区可以增加并行度，减少通讯开销<br>下图表示连接两个表在分区前后的区别，分区后每个u只负责一段区域的join，从而可以减少通讯开销<br><img src="/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/未分区的两表连接.png" alt><br><img src="/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/分区后的两表连接.png" alt></p>
+<p><strong>RDD分区原则</strong><br>分区个数 = 集群中CPU核心数目</p>
+<p><strong>分区方法</strong></p>
+<ul>
+<li>在spark.default.parallelism中设置分区数目</li>
+<li>在调用textFile()和parallelize()方法时指定分区个数<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">list = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line">rdd = sc.parallelize(list,<span class="number">2</span>)  <span class="comment"># 设置两个分区</span></span><br></pre></td></tr></table></figure></li>
+<li>使用reparitition方法重新设置分区个数<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">data = sc.parallelize([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>],<span class="number">2</span>)</span><br><span class="line">len(data.glom().collect())  <span class="comment"># 显示data这个RDD的分区数量</span></span><br><span class="line">rdd = data.repartition(<span class="number">1</span>)  <span class="comment"># 对data这个RDD进行重新分区</span></span><br><span class="line">len(rdd.glom().collect())  <span class="comment"># 显示rdd这个RDD的分区数量</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2</span><br><span class="line">1</span><br></pre></td></tr></table></figure></li>
+<li>自定义分区方式<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">MyPartitioner</span>(<span class="params">key</span>):</span></span><br><span class="line">    print(<span class="string">&quot;MyPartitioner is running&quot;</span>)</span><br><span class="line">    print(<span class="string">&quot;The key is %d&quot;</span> % key)</span><br><span class="line">    <span class="keyword">return</span> key%<span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span></span><br><span class="line">    print(<span class="string">&quot;The main function is running&quot;</span>)</span><br><span class="line">    conf = SparkConf().setMaster(<span class="string">&quot;local&quot;</span>).setAppName(<span class="string">&quot;MyApp&quot;</span>)</span><br><span class="line">    sc = SparkContext(conf=conf)</span><br><span class="line">    data = sc.parallelize(range(<span class="number">10</span>), <span class="number">5</span>)</span><br><span class="line">    data.map(<span class="keyword">lambda</span> x:(x,<span class="number">1</span>))\</span><br><span class="line">        .partitionBy(<span class="number">10</span>, MyPartitioner)\</span><br><span class="line">        .map(<span class="keyword">lambda</span> x:x[<span class="number">0</span>])\</span><br><span class="line">        .saveAsTextFile(<span class="string">&quot;file:///usr/local/spark/mycode/rdd/partitioner&quot;</span>)</span><br><span class="line"><span class="comment"># partitionBy只接受键值对类型的</span></span><br><span class="line"><span class="comment"># 10个分区，会生成10个文件，所以只写目录</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+使用pyspark提交<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;local&#x2F;spark&#x2F;bin&#x2F;spark-submit TestPartitioner.py</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="键值对RDD"><a href="#键值对RDD" class="headerlink" title="键值对RDD"></a>键值对RDD</h2><p>通过并行集合(列表)创建RDD<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">list = [<span class="string">&quot;Hadoop&quot;</span>, <span class="string">&quot;Spark&quot;</span>, <span class="string">&quot;Hive&quot;</span>, <span class="string">&quot;Spark&quot;</span>]</span><br><span class="line">rdd = sc.parallelize(list)</span><br><span class="line">pairRDD = rdd.map(<span class="keyword">lambda</span> word:(word, <span class="number">1</span>))</span><br><span class="line">pairRDD.foreach(<span class="keyword">print</span>)</span><br><span class="line">print(<span class="string">&quot;*******&quot;</span>)</span><br><span class="line">pairRDD.keys().foreach(<span class="keyword">print</span>)</span><br><span class="line">print(<span class="string">&quot;*******&quot;</span>)</span><br><span class="line">pairRDD.sortByKey().foreach(<span class="keyword">print</span>)</span><br></pre></td></tr></table></figure><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">(Hadoop, 1)</span><br><span class="line">(Spark, 1)</span><br><span class="line">(Hive, 1)</span><br><span class="line">(Spark, 1)</span><br><span class="line">*******</span><br><span class="line">Hadoop</span><br><span class="line">Spark</span><br><span class="line">Hive</span><br><span class="line">Spark</span><br><span class="line">*******</span><br><span class="line">(Hadoop, 1)</span><br><span class="line">(Hive, 1)</span><br><span class="line">(Spark, 1)</span><br><span class="line">(Spark, 1)</span><br></pre></td></tr></table></figure><br>sortBy()方法<br>注：False表示降序<br><img src="/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/sortBy例子.png" alt></p>
+<h2 id="文件数据读写"><a href="#文件数据读写" class="headerlink" title="文件数据读写"></a>文件数据读写</h2><ul>
+<li>本地文件系统的数据读写<ul>
+<li>读<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">textFile = sc.textFile(<span class="string">&quot;file:///usr/local/spark/mycode/rdd/word.txt&quot;</span>)  <span class="comment"># 本地文件需要有三个斜杠</span></span><br><span class="line">testFile.first()  <span class="comment"># 读第一行（行动类型操作）</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;Hadoop is good.&quot;</span><br></pre></td></tr></table></figure></li>
+<li>写<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">textFile.saveAsTextFile(<span class="string">&quot;file:///usr/local/spark/mycode/rdd/writeback&quot;</span>)  <span class="comment"># 由于存在分区的概念，文件写到目录中</span></span><br></pre></td></tr></table></figure></li>
+<li>再次把数据加载在RDD中<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">textFile = sc.textFile(<span class="string">&quot;file:///usr/local/spark/mycode/rdd/writeback&quot;</span>)  <span class="comment"># 读取一个目录</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>分布式文件系统HDFS的数据读写<ul>
+<li>读<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">textFile = sc.textFile(<span class="string">&quot;hdfs://localhost:9000/user/hadoop/word.txt&quot;</span>)</span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">三个文件路径是等价的 </span></span><br><span class="line"><span class="string">hdfs://localhost:9000/user/hadoop/word.txt</span></span><br><span class="line"><span class="string">/user/hadoop/word.txt</span></span><br><span class="line"><span class="string">word.txt</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li>写<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">textFile = sc.textFile(<span class="string">&quot;word.txt&quot;</span>)</span><br><span class="line">textFile.saveAsTextFile(<span class="string">&quot;writeback&quot;</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="基本实例"><a href="#基本实例" class="headerlink" title="基本实例"></a>基本实例</h2><h3 id="综合案例1：词频统计"><a href="#综合案例1：词频统计" class="headerlink" title="综合案例1：词频统计"></a>综合案例1：词频统计</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line">conf = SparkConf().setMaster(<span class="string">&quot;local&quot;</span>).setAppName(<span class="string">&quot;My App&quot;</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line">lines = sc.textFile(<span class="string">&quot;file:///usr/local/spark/mycode/rdd/word.txt&quot;</span>)</span><br><span class="line">wordCount = lines.flatMap(<span class="keyword">lambda</span> line:line.split(<span class="string">&quot; &quot;</span>)).\</span><br><span class="line">                  map(<span class="keyword">lambda</span> word:(word, <span class="number">1</span>)).reduceByKey(<span class="keyword">lambda</span> a,b: a+b)</span><br><span class="line">print(wordCount.collect())</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[(&quot;good&quot;,1),(&quot;Spark&quot;,2),(&quot;is&quot;,3),(&quot;better&quot;,1),(&quot;Hadoop&quot;,1),(&quot;fast&quot;,1)]</span><br></pre></td></tr></table></figure>
+<p>其中sc.textFile()方法发生了如下变化<br><img src="/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/综合案例1textFile.png" alt><br>.flatMap()发生了如下变化<br><img src="/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/综合案例1flatMap.png" alt></p>
+<p>(补充)reduceByKey()等价于<code>.groupByKey().map(lambda t:(t[0], sum(t[1])))</code><br>(补充)groupByKey()发生了如下变化<br><img src="/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/groupByKey.png" alt></p>
+<h3 id="综合案例2：计算每个图书每天的平均销量"><a href="#综合案例2：计算每个图书每天的平均销量" class="headerlink" title="综合案例2：计算每个图书每天的平均销量"></a>综合案例2：计算每个图书每天的平均销量</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line">conf = SparkConf().setMaster(<span class="string">&quot;local&quot;</span>).setAppName(<span class="string">&quot;My App&quot;</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line">rdd = sc.parallelize([(<span class="string">&quot;spark&quot;</span>,<span class="number">2</span>),(<span class="string">&quot;hadoop&quot;</span>,<span class="number">6</span>),(<span class="string">&quot;hadoop&quot;</span>,<span class="number">4</span>),(<span class="string">&quot;spark&quot;</span>,<span class="number">6</span>)])</span><br><span class="line">rdd.mapValues(<span class="keyword">lambda</span> x:(x,<span class="number">1</span>)).\</span><br><span class="line">    reduceByKey(<span class="keyword">lambda</span> x,y:(x[<span class="number">0</span>]+y[<span class="number">0</span>],x[<span class="number">1</span>]+y[<span class="number">1</span>])).\</span><br><span class="line">    mapValues(<span class="keyword">lambda</span> x:x[<span class="number">0</span>]/x[<span class="number">1</span>]).collect()</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[(&quot;hadoop&quot;,5.0),(&quot;spark&quot;,4.0)]</span><br></pre></td></tr></table></figure>
+<p>下图表示了经过这几个函数，这些数据发生的变化<br><img src="/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/综合案例2键值对的变化.png" alt></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rdd = sc.textFile(<span class="string">&quot;file*.txt&quot;</span>)</span><br><span class="line">res1 = rdd.filter(<span class="keyword">lambda</span> line: len(line.strip()) &gt; <span class="number">0</span>)</span><br><span class="line">res2 = rdd.map(<span class="keyword">lambda</span> x: x.split(<span class="string">&quot; &quot;</span>))</span><br><span class="line">res3 = rdd.sortByKey(false)</span><br><span class="line">res4 = rdd.groupBy</span><br></pre></td></tr></table></figure>
+<h1 id="Spark-SQL"><a href="#Spark-SQL" class="headerlink" title="Spark SQL"></a>Spark SQL</h1><p>Hadoop中有Hive将SQL语句转化成底层的map, reduce作业，在Spark中，大家也希望有一款产品，可以将SQL转化成Spark程序执行，Spark的程序猿们把Hive搬了过来，Spark底下的Hive可以把SQL转化成底层的Spark程序去执行(Spark的RDD操作)，于是出现了Shark，由于设计缺陷，目前Shark项目已暂停。<br>现在另起炉灶开发了Spark SQL，Spark SQL增加了DataFrame(即带有Schema信息的RDD)，使用户可以在Spark SQL中执行SQL语句，数据既可以来自RDD，也可以是Hive、HDFS、Cassandra等外部数据源，还可以是JSON格式的数据。</p>
+<h1 id="DataFrame"><a href="#DataFrame" class="headerlink" title="DataFrame"></a>DataFrame</h1><p>DataFrame和RDD的区别</p>
+<ul>
+<li>DataFrame的推出让Spark具备了处理大规模结构化数据的能力，不仅比原有的RDD转化方式更加简单易用，而且获得了更高的计算性能</li>
+<li>Spark能够轻松实现从MySQL到DataFrame的转化，并且支持SQL查询</li>
+<li>RDD是分布式的Java对象的集合，但是，对象颞部结构对于RDD而言却是不可知的</li>
+<li>DataFrame是一种以RDD为基础的分布式数据集，提供了详细的结构信息<br><img src="/2021/02/19/pyspark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%8D%E8%A7%81pandas%E7%B3%BB%E5%88%97/DataFrame和RDD区别.png" alt></li>
+</ul>
+<h2 id="DataFrame创建"><a href="#DataFrame创建" class="headerlink" title="DataFrame创建"></a>DataFrame创建</h2><p>使用SparkSession接口做为指挥官，该接口实现了SQLContext及HiveContext所有功能。SparkSession支持从不同的数据源加载数据，并把数据转换成DataFrame，并且支持把DataFrame转换成SQLContext自身中的表，然后使用SQL语句来操作数据<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkContext, SparkConf</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line">spark = SparkSession.builder.config(conf=SparkConf()).getOrCreate()</span><br><span class="line">df = spark.read.json(<span class="string">&quot;file:///usr/local/spark/example/src/main/resources/people.json&quot;</span>)</span><br><span class="line">df.show()</span><br></pre></td></tr></table></figure><br>注：在pyspark交互式环境中，系统默认生成了两个对象，一个是SparkContext对象(名称为sc)和一个SparkSession对象(名称为spark)</p>
+<h2 id="DataFrame的保存"><a href="#DataFrame的保存" class="headerlink" title="DataFrame的保存"></a>DataFrame的保存</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">peopleDF = spark.read.format(<span class="string">&quot;json&quot;</span>).load(<span class="string">&quot;people.json&quot;</span>)</span><br><span class="line">peopleDF.select(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;age&quot;</span>).write.format(<span class="string">&quot;json&quot;</span>).save(<span class="string">&quot;newpeople.txt&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>注：会新生成一个名称为newpeople.txt的目录，不是文件</p>
+<h2 id="DataFrame常用操作"><a href="#DataFrame常用操作" class="headerlink" title="DataFrame常用操作"></a>DataFrame常用操作</h2><p>留个坑 待填</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/pyspark/" rel="tag"># pyspark</a>
+              <a href="/tags/spark/" rel="tag"># spark</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/27/Leetcode%E5%88%B7%E9%A2%98%E6%97%A5%E8%AE%B0%EF%BC%9A%E4%B8%A4%E9%81%93%E5%B9%B6%E6%9F%A5%E9%9B%86%E7%9A%84%E9%A2%98%E7%9B%AE/" rel="prev" title="Leetcode刷题日记：两道并查集的题目">
+      <i class="fa fa-chevron-left"></i> Leetcode刷题日记：两道并查集的题目
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#spark%E7%8B%AC%E7%AB%8B%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E4%BB%A3%E7%A0%81%E6%A8%A1%E6%9D%BF"><span class="nav-number">1.</span> <span class="nav-text">spark独立应用程序代码模板</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E6%8F%90%E4%BA%A4%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-number">1.1.</span> <span class="nav-text">一个提交的例子</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RDD%E7%BC%96%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">RDD编程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RDD%E5%88%9B%E5%BB%BA"><span class="nav-number">2.1.</span> <span class="nav-text">RDD创建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-number">2.2.</span> <span class="nav-text">基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AC%E6%8D%A2%E6%93%8D%E4%BD%9C-Transformation"><span class="nav-number">2.2.1.</span> <span class="nav-text">转换操作 Transformation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%8C%E5%8A%A8%E6%93%8D%E4%BD%9C-Action"><span class="nav-number">2.2.2.</span> <span class="nav-text">行动操作 Action</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%83%B0%E6%80%A7%E6%9C%BA%E5%88%B6"><span class="nav-number">2.2.3.</span> <span class="nav-text">惰性机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-number">2.3.</span> <span class="nav-text">如何持久化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%88%86%E5%8C%BA"><span class="nav-number">2.4.</span> <span class="nav-text">如何分区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%AE%E5%80%BC%E5%AF%B9RDD"><span class="nav-number">2.5.</span> <span class="nav-text">键值对RDD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%86%99"><span class="nav-number">2.6.</span> <span class="nav-text">文件数据读写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%AE%9E%E4%BE%8B"><span class="nav-number">2.7.</span> <span class="nav-text">基本实例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%BC%E5%90%88%E6%A1%88%E4%BE%8B1%EF%BC%9A%E8%AF%8D%E9%A2%91%E7%BB%9F%E8%AE%A1"><span class="nav-number">2.7.1.</span> <span class="nav-text">综合案例1：词频统计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%BC%E5%90%88%E6%A1%88%E4%BE%8B2%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%AF%8F%E4%B8%AA%E5%9B%BE%E4%B9%A6%E6%AF%8F%E5%A4%A9%E7%9A%84%E5%B9%B3%E5%9D%87%E9%94%80%E9%87%8F"><span class="nav-number">2.7.2.</span> <span class="nav-text">综合案例2：计算每个图书每天的平均销量</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spark-SQL"><span class="nav-number">3.</span> <span class="nav-text">Spark SQL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DataFrame"><span class="nav-number">4.</span> <span class="nav-text">DataFrame</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DataFrame%E5%88%9B%E5%BB%BA"><span class="nav-number">4.1.</span> <span class="nav-text">DataFrame创建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DataFrame%E7%9A%84%E4%BF%9D%E5%AD%98"><span class="nav-number">4.2.</span> <span class="nav-text">DataFrame的保存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DataFrame%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C"><span class="nav-number">4.3.</span> <span class="nav-text">DataFrame常用操作</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Haibara"
+      src="/%E9%AB%98%E6%9C%A8%E5%90%8C%E5%AD%A62.jpeg">
+  <p class="site-author-name" itemprop="name">Haibara</p>
+  <div class="site-description" itemprop="description">每个人都是一座孤岛</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Haibara</span>
+
+
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+
+<span> 博客全站共31.6k字</span>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
